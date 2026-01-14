@@ -1,0 +1,98 @@
+{
+  "name": "Agent based Chatbot",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b1b8ac7a-e8fe-461e-b38a-715113c5aa3e",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "a889d2ae-2159-402f-b326-5f61e90f602e"
+    },
+    {
+      "parameters": {
+        "model": "=groq/compound",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        160,
+        176
+      ],
+      "id": "6f9c3789-6090-4e1f-8d6f-045b410109fe",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "kURoTVHWCVKZAaDp",
+          "name": "Groq account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "=You are a helpful assistant. Answer the user's question clearly and concisely. Its a telegram message output, so give a conciese output and format it suitable for telegram. The output should not be JSON it must be text. \n\n{{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "Always respond in plain text. Give a short answer formatted for telegram."
+        }
+      },
+      "id": "d8e86953-4c01-4371-aa6a-65113133aa9f",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        224,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "88a8fb24-2669-4b17-9eb5-686f169a1ed7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "081ecb0c1261f7f4579b81ac9975b8fb0c16d6313582420f65422834ceb07e5d"
+  },
+  "id": "3amsqspZgIM3fDd2",
+  "tags": []
+}
